@@ -46,3 +46,21 @@ testing :
 		}),
 	)
 ```
+
+# Sorting .. 
+## Bubble-Sort 
+- bubble sort is simply .. if I am larger than the one next to me, we will replace our positions, and at the end of this iteration, the largest number will be at the last position of the array, so the next iteration can be done on all array expect the last index, then the third iteration will be done on the array expect the last 2 indexes and so on .. 
+```go
+func bubble_sort(a []int) {
+	lastPosition := len(a) - 1
+	for lastPosition > 0 {
+		for i := 0; i < lastPosition; i++ {
+			if a[i] > a[i+1] {
+				a[i], a[i+1] = a[i+1], a[i]
+			}
+		}
+
+		lastPosition--
+	}
+}
+```
