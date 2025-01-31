@@ -7,37 +7,37 @@ import (
 )
 
 func main() {
-	// t1 := &Node{
-	// 	val: 1,
-	// 	left: &Node{
-	// 		val: 2,
-	// 		left: &Node{
-	// 			val: 3,
-	// 		},
-	// 		right: &Node{
-	// 			val: 4,
-	// 		},
-	// 	},
-	// 	right: &Node{
-	// 		val: 5,
-	// 		left: &Node{
-	// 			val: 6,
-	// 		},
-	// 		right: &Node{
-	// 			val: 7,
-	// 		}},
-	// }
+	t1 := &Node{
+		val: 1,
+		left: &Node{
+			val: 2,
+			left: &Node{
+				val: 3,
+			},
+			right: &Node{
+				val: 4,
+			},
+		},
+		right: &Node{
+			val: 5,
+			left: &Node{
+				val: 6,
+			},
+			right: &Node{
+				val: 7,
+			}},
+	}
 
-	// log.Println("========= Pre Order ========")
-	// pre_order_traversal(t1)
-	// log.Println("========= In Order ========")
-	// in_order_traversal(t1)
-	// log.Println("========= Post Order ========")
-	// post_order_traversal(t1)
+	log.Println("========= Pre Order ========")
+	pre_order_traversal(t1)
+	log.Println("========= In Order ========")
+	in_order_traversal(t1)
+	log.Println("========= Post Order ========")
+	post_order_traversal(t1)
 
-	// log.Println("======== BFS ========")
-	// breadth_first_traversal(t1)
-	// log.Println(breadth_first_search(t1, 4))
+	log.Println("======== BFS ========")
+	breadth_first_traversal(t1)
+	log.Println(breadth_first_search(t1, 4))
 
 	log.Println("======== DFS =======")
 	log.Println(compare_two_trees_values_and_structure(
@@ -206,4 +206,20 @@ func compare_two_trees_values_and_structure(root1, root2 *Node) bool {
 	}
 
 	return true
+}
+
+func binary_search_tree(root, needle *Node) bool {
+	if root == nil || needle == nil {
+		return false
+	}
+
+	if root.val == needle.val {
+		return true
+	}
+
+	if root.val < needle.val {
+		return binary_search_tree(root.right, needle)
+	}
+
+	return binary_search_tree(root.left, needle) 
 }
