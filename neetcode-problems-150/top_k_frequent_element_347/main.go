@@ -1,27 +1,45 @@
 package main
 
 import (
+	"container/heap"
 	"log"
-	"math"
 )
 
 func main() {
-	log.Println(topKFrequent([]int{1, 1, 1, 2, 2, 3}, 2))
+	log.Println(topKFrequent([]int{1, 1, 1, 2, 2, 3, 4, 5, 6}, 2))
+}
+
+type freq struct {
+	num  int
+	freq int
+}
+
+type MinHeap []freq
+
+func (mh MinHeap) Len() int           { return len(mh) }
+func (mh MinHeap) Less(i, j int) bool { return mh[i].freq < mh[j].freq }
+func (mh MinHeap) Swap(i, j int)      { mh[i], mh[j] = mh[j], mh[i] }
+
+func (mh *MinHeap) Push(item interface{}) {
+	*mh = append(*mh, item.(freq))
+}
+
+func (mh *MinHeap) Pop() interface{} {
+	old := *mh
+	n := len(old)
+	lastItem := old[n-1]
+	*mh = old[0 : n-1]
+	return lastItem
 }
 
 func topKFrequent(nums []int, k int) []int {
-	if len(nums) == 0 {
-		return []int{}
-	}
-	if len(nums) == k {
+	out := []int{}
+
+	if len(nums) == 1 {
 		return nums
 	}
 
-	tracker := make(map[int]int, len(nums))
-	max_1_k := math.MinInt
-	max_2_k := math.MinInt
-	var max_1_val, max_2_val int
-
+	tracker := map[int]int{}
 	for _, num := range nums {
 		if _, exists := tracker[num]; exists {
 			tracker[num] += 1
@@ -30,22 +48,23 @@ func topKFrequent(nums []int, k int) []int {
 		}
 	}
 
-	for k, v := range tracker {
-		if v > max_1_val {
-			max_1_k = k
-			max_1_val = v
+	h := &MinHeap{}
+	heap.Init(h)
+	for key, val := range tracker {
+		if h.Len() <= k {
+			heap.Push(h, freq{num: key, freq: val})
+			for h.Len() > k {
+				heap.Pop(h)
+			}
 		}
 	}
-
-	delete(tracker, max_1_k)
-
-	for k, v := range tracker {
-		if v > max_2_val {
-			max_2_k = k
-			max_2_val = v
-		}
+	if h.Len() > k {
+		heap.Pop(h)
 	}
 
-	delete(tracker, max_2_k)
-	return []int{max_1_k, max_2_k}
+	for h.Len() > 0 {
+		out = append(out, heap.Pop(h).(freq).num)
+	}
+
+	return out
 }
