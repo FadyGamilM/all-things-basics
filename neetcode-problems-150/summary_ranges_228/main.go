@@ -8,6 +8,7 @@ import (
 func main() {
 	log.Println(summaryRanges([]int{0, 2, 3, 4, 6, 8, 9}))
 	log.Println(summaryRanges([]int{0, 1, 2, 4, 5, 7}))
+	log.Println([]int{1, 2, 3}[:2])
 
 }
 
